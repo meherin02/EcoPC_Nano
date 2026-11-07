@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="ecopc-action-token" content="{{ action_token }}">
+<title>EcoPC · Live monitor</title><link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+<script defer src="{{ url_for('static', filename='dashboard.js') }}"></script></head>
+<body><main><header><div><span class="eyebrow">CONTEXT-AWARE ENERGY MONITOR</span><h1>Eco<span>PC</span></h1><p>Your computer activity, in context.</p></div><span id="connection" class="pill">Connecting…</span></header>
+<section class="hero"><div><span class="eyebrow">SYSTEM STATE</span><h2 id="state">Waiting for readings</h2><p id="decision">Start the monitoring program to receive live data.</p></div><div class="updated">Last reading<br><strong id="recorded">—</strong></div></section>
+<section class="power-controls" aria-labelledby="power-heading">
+  <div>
+    <h3 id="power-heading">Power controls</h3>
+    <p id="pause-countdown" class="note">Keep awake pauses EcoPC warnings for 15 minutes. Windows manages its own sleep timer.</p>
+  </div>
+  <div class="power-buttons">
+    <button id="sleep-now" type="button" disabled>Sleep now</button>
+    <button id="keep-awake" type="button">Keep awake · 15 min</button>
+    <button id="resume-warnings" type="button" hidden>Resume warnings</button>
+  </div>
+  <p id="power-result" role="status"></p>
+</section>
+<article class="energy-awareness" id="energy-awareness" aria-labelledby="awareness-heading">
+  <h3 id="awareness-heading">Energy awareness</h3>
+  <p><b>One hour of sleep could save 75 Wh per PC.</b> Example: an 80 W idle setup switched to 5 W sleep for one hour. Done using this PC? Select <b>Sleep now</b> above.</p>
+  <details>
+    <summary>See the monthly impact for a 10-PC lab</summary>
+    <p>Example assumptions: 10 idle hours replaced with sleep each day, 30 days, and an illustrative rate of &#2547;12/kWh.</p>
+    <table aria-label="Illustrative monthly energy and cost savings per PC">
+      <thead><tr><th scope="col">One PC, one month</th><th scope="col">Energy</th><th scope="col">Cost</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Idle at 80 W</th><td>24 kWh</td><td>&#2547;288</td></tr>
+        <tr><th scope="row">Sleep at 5 W</th><td>1.5 kWh</td><td>&#2547;18</td></tr>
+        <tr><th scope="row">Potential savings</th><td><b>22.5 kWh</b></td><td><b>&#2547;270</b></td></tr>
+      </tbody>
+    </table>
+    <p><b>10 PCs: 225 kWh and &#2547;2,700 in potential monthly savings</b> under these assumptions.</p>
+  </details>
+  <p class="note">Illustrative scenario. Actual savings depend on measured power, actual sleep time and your electricity rate.</p>
+</article>
+<section class="grid metrics">
+<article><h3>Keyboard / mouse idle</h3><strong id="idle">—</strong><p>Recent input determines active use.</p></article>
+<article><h3>CPU usage</h3><strong id="cpu">—</strong><progress id="cpu-bar" max="100" value="0"></progress></article>
+<article><h3>Memory usage</h3><strong id="memory">—</strong><progress id="memory-bar" max="100" value="0"></progress></article>
+<article><h3>PIR motion</h3><strong id="motion">—</strong><p id="absence">No sensor data yet.</p></article></section>
+<section class="grid two"><article><h3>CPU activity</h3><p>Latest 60 saved readings · 0–100%</p><svg id="chart" viewBox="0 0 600 150" role="img" aria-label="CPU usage across recent saved readings"><path d="M0 1H600 M0 75H600 M0 149H600" stroke="#dbe7e2" fill="none"/><polyline id="cpu-line" fill="none" stroke="#168763" stroke-width="3"/></svg></article>
+<article><h3>Session energy estimate</h3><strong id="energy">—</strong><p id="waste">No estimate saved.</p><p id="estimate-time"></p><p class="note" id="power"></p><p class="note">Estimated energy during suspected waste, not measured electricity or proven savings. Totals reset when monitoring restarts.</p></article></section>
+<section class="grid two"><article><h3>Decision guide</h3><p><b>ACTIVE</b> · Recent keyboard or mouse input.</p><p><b>BACKGROUND WORK</b> · Input inactive, CPU above the configured threshold.</p><p><b>IDLE WITH MOTION</b> · Input inactive and CPU low, but PIR sees movement. Warning withheld.</p><p><b>TEMPORARILY AWAY</b> · Waiting for continuous no-motion confirmation.</p><p><b>SUSPECTED WASTE</b> · Input inactive, CPU low, and no motion beyond the grace period. Reading or video playback may still be ongoing.</p><p><b>KEEP AWAKE</b> · The user paused EcoPC warnings.</p><p><b>UNKNOWN</b> · Required data unavailable; waste warning withheld.</p><p class="note">Motion alone does not mark the PC active. PIR can miss people sitting still.</p><p id="settings" class="note"></p><p class="note">Audible warning: a short beep from this PC’s speakers every 5 seconds while suspected waste is active.</p></article>
+<article><h3>Recent events</h3><ul id="events"><li>No events yet.</li></ul></article></section>
+<footer><span>Local monitoring · Updates every second without reloading the page</span><nav><a href="/api/history">Reading data</a> · <a href="/api/events">Event data</a></nav></footer>
+</main></body></html>
