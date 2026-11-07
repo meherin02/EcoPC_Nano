@@ -9,7 +9,7 @@
 
 PIR needs 60 seconds after reset. Opening COM3 can reset the Nano. A disconnected sensor shows UNKNOWN; a stopped monitor shows stale/offline. Reconnect retries every 3 seconds on the configured COM port.
 
-LED wiring: D9 to green anode, D10 to red anode, both cathodes to GND. No external resistor is used ONLY because firmware uses INPUT_PULLUP. Never load OUTPUT-based LED code with this wiring. Green steady = recent input; green blinking = background CPU activity; red blinking = suspected waste; both off = unknown/host disconnected. Motion alone does not mark the computer active.
+LED wiring: D9 through a 220-ohm resistor to the green LED anode, D10 through a separate 220-ohm resistor to the red LED anode, and both cathodes to GND. The current firmware uses OUTPUT mode, so each LED needs its own series resistor. Green steady = recent input; green blinking = background CPU activity; red blinking = suspected waste; both off = unknown/host disconnected. Motion alone does not mark the computer active.
 
 Buzzer is disconnected and disabled by default. Its polarity/5V supply test is complete, but current/type is unknown. Safe GPIO drive requires a verified load within Nano limits or a suitable driver. Software cannot substitute for this. Do not set the firmware verification flag until hardware has been checked.
 
